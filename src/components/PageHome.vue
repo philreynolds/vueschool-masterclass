@@ -334,11 +334,4 @@ export default {
   flex: 1 1 83%;
 }
 
-.profile-card {
-  padding: 10px 20px 20px 20px;
-  margin-bottom: 10px;
-  background: white;
-  box-shadow: 2px 2px 1px rgba(136, 136, 136, 0.09);
-  align-self: self-end;
-}
 </style>
