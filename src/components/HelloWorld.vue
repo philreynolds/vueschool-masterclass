@@ -31,10 +31,19 @@
 </template>
 
 <script>
+// Import mock data for development
+
+import sourceData from '@/data.json'
+
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  data () {
+    return {
+      sourceData: sourceData
+    }
   }
 }
 </script>
