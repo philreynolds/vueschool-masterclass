@@ -189,6 +189,7 @@ figcaption {
 .thread-list {
     padding: 0;
     background-color: white;
+    text-align: left;
 }
 
 .thread-list .thread {
