@@ -1,6 +1,6 @@
 <template>
 
-  <div v-if="thread" class="col-large push-top">
+  <div class="col-large push-top">
 
     <h1>{{thread.title}}</h1>
 
@@ -35,11 +35,6 @@
     </div>
   </div>
 
-  <div v-else class="col-full text-center">
-    <h1>This thread is not found.</h1>
-    <router-link :to="{name: 'Home'}">Click here to return to the thread list.</router-link>
-  </div>
-
 </template>
 
 <script>
@@ -67,11 +62,9 @@ export default {
   },
   methods: {
     postById (postId) {
-      console.log('postId: ' + postId)
       return this.posts.find(p => p.id === postId)
     },
     userById (userId) {
-      console.log('userId: ' + userId)
       return this.users.find(u => u.id === userId)
     }
   }
