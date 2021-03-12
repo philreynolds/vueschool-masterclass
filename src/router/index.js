@@ -24,7 +24,12 @@ const routes = [
         return next()
       } else {
         next({
-          name: 'NotFound'
+          name: 'NotFound',
+          params: {
+            pathMatch: to.path.substring(1).split('/')
+          },
+          query: to.query,
+          hash: to.hash
         })
       }
     }
