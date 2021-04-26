@@ -20,7 +20,6 @@ const routes = [
       // Check if thread exists.
       const threadExists = sourceData.threads.find(thread => thread.id === to.params.id)
       if (threadExists) {
-        console.log(to)
         return next()
       } else {
         next({
