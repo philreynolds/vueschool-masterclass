@@ -6,7 +6,40 @@
 
     <post-list :posts="threadPosts"></post-list>
 
-    <post-editor :threadId="thread.id"></post-editor>
+    <div class="col-full">
+      <form @submit.prevent="addPost">
+        <div class="form-group">
+          <label for="thread_title">Title:</label>
+          <input type="text"
+                 id="thread_title"
+                 class="form-input"
+                 name="title"
+          >
+        </div>
+        <div class="form-group">
+          <label for="thread_content">Content:</label>
+          <textarea
+            v-model = "newPostText"
+            id="thread_content"
+            class="form-input"
+            name="content"
+            rows="8"
+            cols="140"
+          >
+          </textarea>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-ghost">Cancel</button>
+          <button class="btn btn-blue"
+                  type="submit"
+                  name="Publish"
+          >
+            Publish
+          </button>
+        </div>
+      </form>
+    </div>
 
   </div>
 
@@ -15,12 +48,10 @@
 <script>
 import sourceData from '@/data.json'
 import PostList from '@/components/PostList.vue'
-import PostEditor from '@/components/PostEditor'
 
 export default {
   name: 'ThreadShow',
   components: {
-    PostEditor,
     PostList
   },
   props: {
@@ -32,7 +63,8 @@ export default {
   data () {
     return {
       threads: sourceData.threads,
-      posts: sourceData.posts
+      posts: sourceData.posts,
+      newPostText: 'Temp Text'
     }
   },
   computed: {
@@ -41,6 +73,21 @@ export default {
     },
     threadPosts () {
       return this.posts.filter(post => post.threadId === this.id)
+    }
+  },
+  methods: {
+    addPost () {
+      const postId = 'gggg' + Math.random()
+      const post = {
+        id: postId,
+        text: this.newPostText,
+        publishedAt: Math.floor(Date.now() / 1000),
+        threadId: this.id,
+        userId: 'NnooaWj4KHVxbhKwO1pEdfaQDsD2'
+      }
+      this.posts.push(post)
+      this.thread.posts.push(postId)
+      this.newPostText = ''
     }
   }
 }
