@@ -6,30 +6,7 @@
 
     <post-list :posts="threadPosts"></post-list>
 
-    <div class="col-full">
-      <form @submit.prevent="addPost">
-        <div class="form-group">
-          <label for="thread_content">My Comment</label>
-          <textarea
-            v-model = "newPostText"
-            id="thread_content"
-            class="form-input"
-            name="content"
-            rows="8"
-            cols="140"
-          >
-          </textarea>
-        </div>
-
-        <div class="btn-group">
-          <button class="btn btn-ghost">Cancel</button>
-          <button class="btn btn-blue"
-                  type="submit"
-                  name="Publish"
-          >Publish</button>
-        </div>
-      </form>
-    </div>
+    <post-editor :threadId="thread.id"></post-editor>
 
   </div>
 
@@ -38,10 +15,12 @@
 <script>
 import sourceData from '@/data.json'
 import PostList from '@/components/PostList.vue'
+import PostEditor from '@/components/PostEditor'
 
 export default {
   name: 'ThreadShow',
   components: {
+    PostEditor,
     PostList
   },
   props: {
@@ -53,8 +32,7 @@ export default {
   data () {
     return {
       threads: sourceData.threads,
-      posts: sourceData.posts,
-      newPostText: 'Temp Text'
+      posts: sourceData.posts
     }
   },
   computed: {
@@ -64,21 +42,6 @@ export default {
     threadPosts () {
       return this.posts.filter(post => post.threadId === this.id)
     }
-  },
-  methods: {
-    addPost () {
-      const postId = 'gggg' + Math.random()
-      const post = {
-        id: postId,
-        text: this.newPostText,
-        publishedAt: Math.floor(Date.now() / 1000),
-        threadId: this.id,
-        userId: 'NnooaWj4KHVxbhKwO1pEdfaQDsD2'
-      }
-      this.posts.push(post)
-      this.thread.posts.push(postId)
-      this.newPostText = ''
-    }
   }
 }
 
@@ -86,14 +49,4 @@ export default {
 
 <style scoped>
 
-label {
-  font-weight: bold;
-  margin-top: 1em;
-}
-
-.form-group {
-  text-align: left;
-  margin-top: 2em;
-  border-top: 1px solid #ddd;
-}
 </style>
