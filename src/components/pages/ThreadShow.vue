@@ -5,41 +5,7 @@
     <h1>{{thread.title}}</h1>
 
     <post-list :posts="threadPosts"></post-list>
-
-    <div class="col-full">
-      <form @submit.prevent="addPost">
-        <div class="form-group">
-          <label for="thread_title">Title:</label>
-          <input type="text"
-                 id="thread_title"
-                 class="form-input"
-                 name="title"
-          >
-        </div>
-        <div class="form-group">
-          <label for="thread_content">Content:</label>
-          <textarea
-            v-model = "newPostText"
-            id="thread_content"
-            class="form-input"
-            name="content"
-            rows="8"
-            cols="140"
-          >
-          </textarea>
-        </div>
-
-        <div class="btn-group">
-          <button class="btn btn-ghost">Cancel</button>
-          <button class="btn btn-blue"
-                  type="submit"
-                  name="Publish"
-          >
-            Publish
-          </button>
-        </div>
-      </form>
-    </div>
+    <post-editor :threadId="thread.id"></post-editor>
 
   </div>
 
@@ -48,10 +14,12 @@
 <script>
 import sourceData from '@/data.json'
 import PostList from '@/components/PostList.vue'
+import PostEditor from '@/components/PostEditor'
 
 export default {
   name: 'ThreadShow',
   components: {
+    PostEditor,
     PostList
   },
   props: {

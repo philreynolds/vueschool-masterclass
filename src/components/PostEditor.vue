@@ -61,7 +61,7 @@ export default {
   },
   computed: {
     thread () {
-      return this.threads.find(x => x.id === this.threadId)
+      return this.threads.find(t => t.id === this.threadId)
     }
   }
 }
