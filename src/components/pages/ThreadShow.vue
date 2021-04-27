@@ -9,15 +9,7 @@
     <div class="col-full">
       <form @submit.prevent="addPost">
         <div class="form-group">
-          <label for="thread_title">Title:</label>
-          <input type="text"
-                 id="thread_title"
-                 class="form-input"
-                 name="title"
-          >
-        </div>
-        <div class="form-group">
-          <label for="thread_content">Content:</label>
+          <label for="thread_content">My Comment</label>
           <textarea
             v-model = "newPostText"
             id="thread_content"
@@ -34,9 +26,7 @@
           <button class="btn btn-blue"
                   type="submit"
                   name="Publish"
-          >
-            Publish
-          </button>
+          >Publish</button>
         </div>
       </form>
     </div>
@@ -96,4 +86,14 @@ export default {
 
 <style scoped>
 
+label {
+  font-weight: bold;
+  margin-top: 1em;
+}
+
+.form-group {
+  text-align: left;
+  margin-top: 2em;
+  border-top: 1px solid #ddd;
+}
 </style>
