@@ -5,7 +5,8 @@
     <h1>{{thread.title}}</h1>
 
     <post-list :posts="threadPosts"></post-list>
-    <post-editor :threadId="thread.id"></post-editor>
+
+    <post-editor @save="addPost"/>
 
   </div>
 
@@ -44,18 +45,13 @@ export default {
     }
   },
   methods: {
-    addPost () {
-      const postId = 'gggg' + Math.random()
+    addPost (eventData) {
       const post = {
-        id: postId,
-        text: this.newPostText,
-        publishedAt: Math.floor(Date.now() / 1000),
-        threadId: this.id,
-        userId: 'NnooaWj4KHVxbhKwO1pEdfaQDsD2'
+        ...eventData.post,
+        threadId: this.id
       }
       this.posts.push(post)
-      this.thread.posts.push(postId)
-      this.newPostText = ''
+      this.thread.posts.push(post.id)
     }
   }
 }

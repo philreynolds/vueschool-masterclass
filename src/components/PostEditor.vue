@@ -4,7 +4,7 @@
       <div class="form-group">
         <label for="thread_content">My Comment</label>
         <textarea
-          v-model = "newPostText"
+          v-model = "text"
           id="thread_content"
           class="form-input"
           name="content"
@@ -27,21 +27,19 @@
 
 <script>
 
-import sourceData from '@/data.json'
+// import sourceData from '@/data.json'
 
 export default {
   name: 'PostEditor',
-  props: {
-    threadId: {
-      required: true,
-      type: String
-    }
-  },
+  // props: {
+  //   threadId: {
+  //     required: true,
+  //     type: String
+  //   }
+  // },
   data () {
     return {
-      posts: sourceData.posts,
-      threads: sourceData.threads,
-      newPostText: ''
+      text: ''
     }
   },
   methods: {
@@ -49,19 +47,13 @@ export default {
       const postId = 'gggg' + Math.random()
       const post = {
         id: postId,
-        text: this.newPostText,
+        text: this.text,
         publishedAt: Math.floor(Date.now() / 1000),
         threadId: this.threadId,
         userId: 'NnooaWj4KHVxbhKwO1pEdfaQDsD2'
       }
-      this.posts.push(post)
-      this.thread.posts.push(postId)
-      this.newPostText = ''
-    }
-  },
-  computed: {
-    thread () {
-      return this.threads.find(t => t.id === this.threadId)
+      this.$emit('save', { post })
+      this.text = ''
     }
   }
 }
