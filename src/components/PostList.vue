@@ -26,7 +26,6 @@
 <script>
 // Import temp sourceData as temp data during local development.
 import sourceData from '@/data.json'
-import AppDate from '@/components/AppDate'
 
 export default {
   name: 'PostList',
@@ -35,9 +34,6 @@ export default {
       required: true,
       type: Array
     }
-  },
-  components: {
-    AppDate
   },
   data () {
     return {
