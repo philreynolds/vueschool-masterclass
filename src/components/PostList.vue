@@ -16,11 +16,8 @@
           <p>{{ post.text }}</p>
         </div>
       </div>
-      <div
-        class="post-date text-faded"
-        :title="humanFriendlyDate(post.publishedAt)"
-      >
-        {{ diffForHumans(post.publishedAt) }}
+      <div class="post-date text-faded">
+        <AppDate :timestamp="post.publishedAt"></AppDate>
       </div>
     </div>
   </div>
@@ -29,13 +26,7 @@
 <script>
 // Import temp sourceData as temp data during local development.
 import sourceData from '@/data.json'
-
-// Import DayJS
-import dayjs from 'dayjs'
-import relativetime from 'dayjs/plugin/relativeTime'
-import localizedDate from 'dayjs/plugin/localizedFormat'
-dayjs.extend(relativetime)
-dayjs.extend(localizedDate)
+import AppDate from '@/components/AppDate'
 
 export default {
   name: 'PostList',
@@ -45,6 +36,9 @@ export default {
       type: Array
     }
   },
+  components: {
+    AppDate
+  },
   data () {
     return {
       users: sourceData.users
@@ -53,12 +47,6 @@ export default {
   methods: {
     userById (userId) {
       return this.users.find(u => u.id === userId)
-    },
-    diffForHumans (timeStamp) {
-      return dayjs.unix(timeStamp).fromNow()
-    },
-    humanFriendlyDate (timestamp) {
-      return dayjs.unix(timestamp).format('llll')
     }
   }
 }
