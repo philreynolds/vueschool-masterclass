@@ -5,7 +5,7 @@
          class="post"
     >
       <div class="user-info">
-        <a href="#" class="user-name">{{userById(post.userId).name}}</a>
+        <a href="#" class="user-name">{{ userById(post.userId).name }}</a>
         <a href="#">post
           <img class="avatar-large" :src="userById(post.userId).avatar" alt="">
         </a>
@@ -13,16 +13,29 @@
       </div>
       <div class="post-content">
         <div>
-          <p>{{post.text}}</p>
+          <p>{{ post.text }}</p>
         </div>
       </div>
-      <div class="post-date text-faded">{{post.publishedAt}}</div>
+      <div
+        class="post-date text-faded"
+        :title="humanFriendlyDate(post.publishedAt)"
+      >
+        {{ diffForHumans(post.publishedAt) }}
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+// Import temp sourceData as temp data during local development.
 import sourceData from '@/data.json'
+
+// Import DayJS
+import dayjs from 'dayjs'
+import relativetime from 'dayjs/plugin/relativeTime'
+import localizedDate from 'dayjs/plugin/localizedFormat'
+dayjs.extend(relativetime)
+dayjs.extend(localizedDate)
 
 export default {
   name: 'PostList',
@@ -40,6 +53,12 @@ export default {
   methods: {
     userById (userId) {
       return this.users.find(u => u.id === userId)
+    },
+    diffForHumans (timeStamp) {
+      return dayjs.unix(timeStamp).fromNow()
+    },
+    humanFriendlyDate (timestamp) {
+      return dayjs.unix(timestamp).format('llll')
     }
   }
 }
