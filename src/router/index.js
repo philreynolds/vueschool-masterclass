@@ -1,4 +1,5 @@
 import Home from '@/components/pages/Home'
+import Forum from '@/components/pages/Forum'
 import ThreadShow from '@/components/pages/ThreadShow'
 import NotFound from '@/components/pages/NotFound'
 import sourceData from '@/data.json'
@@ -10,6 +11,12 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/forum/:id',
+    name: 'Forum',
+    component: Forum,
+    props: true
   },
   {
     path: '/thread/:id',
