@@ -43,5 +43,7 @@ export default {
 </script>
 
 <style scoped>
-
+.forum-details {
+  text-align: left;
+}
 </style>
