@@ -1,10 +1,10 @@
 <template>
   <div class="col-full">
+    <h1>{{ category.name }}</h1>
     <div class="forum-list">
       <h2 class="list-title">{{ category.name }}</h2>
       <forum-list
         :forums="forumsForCategory (id)"
-        :categoryName="category.name"
       />
     </div>
   </div>
