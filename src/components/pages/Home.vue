@@ -1,7 +1,7 @@
 <template>
 
   <h1>Welcome to the Forum!</h1>
-  <forum-list :forums="forums"/>
+  <category-list :categories="categories"/>
 
 </template>
 
@@ -9,15 +9,16 @@
 
 import sourceData from '@/data.json'
 import forumList from '@/components/ForumList'
+import CategoryList from '@/components/CategoryList'
 
 export default {
   name: 'PageHome',
   components: {
-    forumList
+    CategoryList
   },
   data () {
     return {
-      forums: sourceData.forums
+      categories: sourceData.categories
     }
   }
 }
