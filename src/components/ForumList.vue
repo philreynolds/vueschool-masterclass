@@ -12,7 +12,7 @@
       >
         {{ forum.name }}
       </router-link>
-      <p>{{ forum.description }}</p>
+
     </div>
 
     <div class="threads-count">
