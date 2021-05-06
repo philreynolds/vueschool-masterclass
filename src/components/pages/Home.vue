@@ -8,12 +8,12 @@
 <script>
 
 import sourceData from '@/data.json'
-import categoryList from '@/components/CategoryList'
+import CategoryList from '@/components/CategoryList'
 
 export default {
   name: 'PageHome',
   components: {
-    categoryList
+    CategoryList
   },
   data () {
     return {

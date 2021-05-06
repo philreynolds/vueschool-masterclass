@@ -1,24 +1,19 @@
 <template>
-  <div class="col-full">
-    <h1>{{ category.name }}</h1>
-    <div class="forum-list">
-      <h2 class="list-title">{{ category.name }}</h2>
-      <forum-list
-        :forums="forumsForCategory (id)"
-      />
-    </div>
-  </div>
+  <h1>{{ category.name }}</h1>
+  <forum-list
+    :forums="getForumsForCategory(category)"
+    :title="category.name"
+  />
 </template>
 
 <script>
-
 import sourceData from '@/data.json'
-import forumList from '@/components/ForumList'
+import ForumList from '@/components/ForumList'
 
 export default {
   name: 'Category',
   components: {
-    forumList
+    ForumList
   },
   props: {
     id: {
@@ -26,18 +21,17 @@ export default {
       type: String
     }
   },
-  methods: {
-    forumsForCategory (id) {
-      return sourceData.forums.filter(f => f.categoryId === this.id)
-    }
-  },
   computed: {
     category () {
       return sourceData.categories.find(c => c.id === this.id)
     }
+  },
+  methods: {
+    getForumsForCategory (category) {
+      return sourceData.forums.filter(f => f.categoryId === category.id)
+    }
   }
 }
-
 </script>
 
 <style scoped>

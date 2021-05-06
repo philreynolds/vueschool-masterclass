@@ -3,7 +3,6 @@ import Forum from '@/components/pages/Forum'
 import ThreadShow from '@/components/pages/ThreadShow'
 import NotFound from '@/components/pages/NotFound'
 import Category from '@/components/pages/Category'
-import CategoryList from '@/components/CategoryList'
 import sourceData from '@/data.json'
 
 import { createRouter, createWebHistory } from 'vue-router'
