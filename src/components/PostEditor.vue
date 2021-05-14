@@ -1,6 +1,6 @@
 <template>
   <div class="col-full">
-    <form @submit.prevent="addPost">
+    <form @submit.prevent="save">
       <div class="form-group">
         <label for="thread_content">My Comment</label>
         <textarea
@@ -28,26 +28,16 @@
 <script>
 
 export default {
-  name: 'PostEditor',
-  // props: {
-  //   threadId: {
-  //     required: true,
-  //     type: String
-  //   }
-  // },
   data () {
     return {
       text: ''
     }
   },
   methods: {
-    addPost () {
-      const postId = 'gggg' + Math.random()
+    save () {
       const post = {
-        id: postId,
         text: this.text,
         publishedAt: Math.floor(Date.now() / 1000),
-        threadId: this.threadId,
         userId: 'NnooaWj4KHVxbhKwO1pEdfaQDsD2'
       }
       this.$emit('save', { post })

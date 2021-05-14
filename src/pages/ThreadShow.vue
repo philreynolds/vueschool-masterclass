@@ -5,7 +5,6 @@
     <h1>{{thread.title}}</h1>
 
     <post-list :posts="threadPosts"></post-list>
-
     <post-editor @save="addPost"/>
 
   </div>
@@ -42,10 +41,10 @@ export default {
       return this.$store.state.posts
     },
     thread () {
-      return this.threads.find(thread => thread.id === this.id)
+      return this.threads.find(t => t.id === this.id)
     },
     threadPosts () {
-      return this.posts.filter(post => post.threadId === this.id)
+      return this.posts.filter(p => p.threadId === this.id)
     }
   },
   methods: {
@@ -54,8 +53,7 @@ export default {
         ...eventData.post,
         threadId: this.id
       }
-      this.posts.push(post)
-      this.thread.posts.push(post.id)
+      this.$store.dispatch('createPost', post)
     }
   }
 }
