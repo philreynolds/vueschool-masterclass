@@ -1,8 +1,8 @@
-import Home from '@/components/pages/Home'
-import Forum from '@/components/pages/Forum'
-import ThreadShow from '@/components/pages/ThreadShow'
-import NotFound from '@/components/pages/NotFound'
-import Category from '@/components/pages/Category'
+import Home from '@/pages/Home'
+import Forum from '@/pages/Forum'
+import ThreadShow from '@/pages/ThreadShow'
+import NotFound from '@/pages/NotFound'
+import Category from '@/pages/Category'
 import sourceData from '@/data.json'
 
 import { createRouter, createWebHistory } from 'vue-router'

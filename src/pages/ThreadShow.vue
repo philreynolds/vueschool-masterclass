@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import sourceData from '@/data.json'
+
 import PostList from '@/components/PostList.vue'
 import PostEditor from '@/components/PostEditor'
 
@@ -31,12 +31,16 @@ export default {
   },
   data () {
     return {
-      threads: sourceData.threads,
-      posts: sourceData.posts,
       newPostText: 'Temp Text'
     }
   },
   computed: {
+    threads () {
+      return this.$store.state.threads
+    },
+    posts () {
+      return this.$store.state.posts
+    },
     thread () {
       return this.threads.find(thread => thread.id === this.id)
     },
