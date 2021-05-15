@@ -3,6 +3,7 @@ import Forum from '@/pages/Forum'
 import ThreadShow from '@/pages/ThreadShow'
 import NotFound from '@/pages/NotFound'
 import Category from '@/pages/Category'
+import Profile from '@/pages/Profile'
 import sourceData from '@/data.json'
 
 import { createRouter, createWebHistory } from 'vue-router'
@@ -46,6 +47,11 @@ const routes = [
         })
       }
     }
+  },
+  {
+    path: '/me',
+    name: 'Profile',
+    component: Profile
   },
   {
     path: '/:pathMatch(.*)*',
