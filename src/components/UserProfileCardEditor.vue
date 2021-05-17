@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="profile-card">
+    <div class="profile-card text-left">
       <form @submit.prevent="save">
         <p class="text-center">
           <img
