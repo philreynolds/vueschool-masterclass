@@ -86,15 +86,6 @@
 
     <p class="text-xsmall text-faded text-center">Member since june 2003, last visited 4 hours ago</p>
 
-    <div class="text-center">
-      <hr>
-      <rouer-link
-        :to="{ name: 'ProfileEdit' }"
-        class="btn-green btn-small">
-        Edit Profile
-      </rouer-link>
-    </div>
-
   </div>
 </template>
 
