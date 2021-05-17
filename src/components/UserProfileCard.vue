@@ -14,7 +14,7 @@
     </p>
 
     <div class="text-left">
-      <span class="online">{{ user.username }} is online</span>
+      <span class="online">{{ user.username }} is online in {{user.location}}</span>
     </div>
 
     <div class="stats">
