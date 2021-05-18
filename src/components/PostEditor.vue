@@ -36,9 +36,7 @@ export default {
   methods: {
     save () {
       const post = {
-        text: this.text,
-        publishedAt: Math.floor(Date.now() / 1000),
-        userId: 'NnooaWj4KHVxbhKwO1pEdfaQDsD2'
+        text: this.text
       }
       this.$emit('save', { post })
       this.text = ''
