@@ -52,7 +52,11 @@ export default {
     },
     methods: {
       save () {
-        //dispatch vuex action
+        this.$store.dispatch('createThread', {
+          forumId: this.forum.id,ß
+          title: this.title,
+          text: this.text
+        })
       }
     }
   }
