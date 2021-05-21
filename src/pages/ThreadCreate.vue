@@ -30,7 +30,7 @@
 
       <div class="btn-group">
         <button class="btn btn-ghost">Cancel</button>
-        <button class="btn btn-blue" type="submit" name="Publish">Publish </button>
+        <button class="btn btn-blue" type="submit" name="Publish">Publish</button>
       </div>
     </form>
   </div>
@@ -40,29 +40,30 @@
 export default {
   name: 'Thread Create',
   props: {
-    forum: {
-      type: Object,
+    forumId: {
+      type: String,
       required: true
-    },
-    data () {
-      return {
-        title: '',
-        text: ''
-      }
-    },
-    methods: {
-      save () {
-        this.$store.dispatch('createThread', {
-          forumId: this.forum.id,ß
-          title: this.title,
-          text: this.text
-        })
-      }
+    }
+  },
+  data () {
+    return {
+      title: '',
+      text: ''
+    }
+  },
+  computed: {
+    forum () {
+      return this.$store.state.forums.find(f => f.id === this.forumId)
+    }
+  },
+  methods: {
+    save () {
+      this.$store.dispatch('createThread', {
+        forumId: this.forum.id,
+        title: this.title,
+        text: this.text
+      })
     }
   }
 }
 </script>
-
-<style scoped>
-
-</style>
