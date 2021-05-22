@@ -42,9 +42,9 @@ export default {
     },
     cancel () {
       this.$router.push({
-        name: 'Forum',
+        name: 'ThreadShow',
         params: {
-          id: this.forum.id
+          id: this.id
         }
       })
     }
