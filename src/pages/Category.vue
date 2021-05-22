@@ -9,6 +9,7 @@
 <script>
 
 import ForumList from '@/components/ForumList'
+import { findById } from '@/helpers'
 
 export default {
   name: 'Category',
@@ -23,7 +24,7 @@ export default {
   },
   computed: {
     category () {
-      return this.$store.state.categories.find(c => c.id === this.id)
+      return findById(this.$store.state.categories, this.id)
     }
   },
   methods: {

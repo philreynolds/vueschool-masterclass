@@ -9,6 +9,8 @@
 
 <script>
 import ThreadEditor from '@/components/ThreadEditor'
+import { findById } from '@/helpers'
+
 export default {
   name: 'ThreadEdit',
   components: { ThreadEditor },
@@ -20,10 +22,11 @@ export default {
   },
   computed: {
     thread () {
-      return this.$store.state.threads.find(t => t.id === this.id)
+      return findById(this.$store.state.threads, this.id)
     },
     text () {
-      return this.$store.state.posts.find(p => p.id === this.thread.posts[0]).text
+      return findById(this.$store.state.posts, this.thread.posts[0]).text
+      // return this.$store.state.posts.find(p => p.id === this.thread.posts[0]).text
     }
   },
   methods: {
