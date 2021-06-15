@@ -14,7 +14,7 @@
     </h1>
 
     <p class="text-left">
-      By <a href="#" class="link-unstyled">{{ thread.author.name }}</a>, <AppDate :timestamp="thread.publishedAt"></AppDate> hours ago.
+      By <a href="#" class="link-unstyled">{{ thread.author?.name }}</a>, <AppDate :timestamp="thread.publishedAt"></AppDate> hours ago.
       <span style="float:right; margin-top: 2px;" class="hide-mobile text-faded text-small">{{ thread.repliesCount }} replies by {{ thread.contributorsCount }} contributors</span>
     </p>
 
@@ -29,6 +29,7 @@
 
 import PostList from '@/components/PostList.vue'
 import PostEditor from '@/components/PostEditor'
+import firebase from 'firebase'
 
 export default {
   name: 'ThreadShow',
@@ -69,9 +70,47 @@ export default {
       }
       this.$store.dispatch('createPost', post)
     }
+  },
+  created () {
+    // fetch the thread
+    firebase.firestore().collection('threads').doc(this.id).onSnapshot((doc) => {
+      const thread = {
+        ...doc.data(),
+        id: doc.id
+      }
+      this.$store.commit('setThread', { thread })
+
+      // fetch the user
+      firebase.firestore().collection('users').doc(thread.userId).onSnapshot((doc) => {
+        const user = {
+          ...doc.data(),
+          id: doc.id
+        }
+        this.$store.commit('setUser', { user })
+      })
+
+      // fetch the posts
+      thread.posts.forEach(postId => {
+        firebase.firestore().collection('posts').doc(postId).onSnapshot((doc) => {
+          const post = {
+            ...doc.data(),
+            id: doc.id
+          }
+          this.$store.commit('setPost', { post })
+
+          // fetch the user for each post
+          firebase.firestore().collection('users').doc(post.userId).onSnapshot((doc) => {
+            const user = {
+              ...doc.data(),
+              id: doc.id
+            }
+            this.$store.commit('setUser', { user })
+          })
+        })
+      })
+    })
   }
 }
-
 </script>
 
 <style scoped>
