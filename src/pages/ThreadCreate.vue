@@ -1,9 +1,9 @@
 <template>
-  <div class="col-full push-top">
-
-    <h1>Create new thread in <i>{{ forum.name }}</i></h1>
+  <div v-if="forum" class="col-full push-top">
+    <h1>
+      Create new thread in <i>{{ forum.name }}</i>
+    </h1>
     <thread-editor @save="save" @cancel="cancel"/>
-
   </div>
 </template>
 
@@ -47,6 +47,9 @@ export default {
         }
       })
     }
+  },
+  created () {
+    this.$store.dispatch('fetchForum', { id: this.forumId })
   }
 }
 </script>
