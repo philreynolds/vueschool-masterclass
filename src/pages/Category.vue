@@ -1,9 +1,11 @@
 <template>
-  <h1>{{ category.name }}</h1>
-  <forum-list
-    :forums="getForumsForCategory(category)"
-    :title="category.name"
-  />
+  <div v-if="asyncDataStatus_ready" class="container">
+    <h1>{{ category.name }}</h1>
+    <forum-list
+      :forums="getForumsForCategory(category)"
+      :title="category.name"
+    />
+  </div>
 </template>
 
 <script>
@@ -11,12 +13,14 @@
 import ForumList from '@/components/ForumList'
 import { findById } from '@/helpers'
 import { mapActions } from 'vuex'
+import asyncDataStatus from '@/mixins/asyncDataStatus'
 
 export default {
   name: 'Category',
   components: {
     ForumList
   },
+  mixins: [asyncDataStatus],
   props: {
     id: {
       required: true,
@@ -36,7 +40,8 @@ export default {
   },
   async created () {
     const category = await this.fetchCategory({ id: this.id })
-    const forums = await this.fetchForums({ ids: category.forums })
+    await this.fetchForums({ ids: category.forums })
+    this.asyncDataStatus_fetched()
   }
 }
 </script>

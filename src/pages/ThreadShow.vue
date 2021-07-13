@@ -1,7 +1,5 @@
 <template>
-
-  <div class="col-large push-top">
-
+  <div v-if="asyncDataStatus_ready" class="col-large push-top">
     <h1 class="text-left">
       {{ thread.title }}
       <router-link
@@ -12,17 +10,13 @@
         Edit Thread
       </router-link>
     </h1>
-
     <p class="text-left">
       By <a href="#" class="link-unstyled">{{ thread.author?.name }}</a>, <AppDate :timestamp="thread.publishedAt"></AppDate> hours ago.
       <span style="float:right; margin-top: 2px;" class="hide-mobile text-faded text-small">{{ thread.repliesCount }} replies by {{ thread.contributorsCount }} contributors</span>
     </p>
-
     <post-list :posts="threadPosts"></post-list>
     <post-editor @save="addPost"/>
-
   </div>
-
 </template>
 
 <script>
@@ -30,6 +24,7 @@
 import PostList from '@/components/PostList.vue'
 import PostEditor from '@/components/PostEditor'
 import { mapActions } from 'vuex'
+import asyncDataStatus from '@/mixins/asyncDataStatus'
 
 export default {
   name: 'ThreadShow',
@@ -37,6 +32,7 @@ export default {
     PostEditor,
     PostList
   },
+  mixins: [asyncDataStatus],
   props: {
     id: {
       required: true,
@@ -76,7 +72,8 @@ export default {
     const thread = await this.fetchThread({ id: this.id })
     const posts = await this.fetchPosts({ ids: thread.posts })
     const users = posts.map(post => post.userId).concat(thread.userId)
-    this.fetchUsers({ ids: users })
+    await this.fetchUsers({ ids: users })
+    this.asyncDataStatus_fetched()
   }
 }
 </script>
