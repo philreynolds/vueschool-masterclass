@@ -6,6 +6,7 @@ import ThreadEdit from '@/pages/ThreadEdit'
 import NotFound from '@/pages/NotFound'
 import Category from '@/pages/Category'
 import Profile from '@/pages/Profile'
+import Register from '@/pages/Register'
 import sourceData from '@/data.json'
 import { createRouter, createWebHistory } from 'vue-router'
 import { findById } from '@/helpers'
@@ -34,22 +35,6 @@ const routes = [
     name: 'ThreadShow',
     component: ThreadShow,
     props: true
-    // beforeEnter (to, from, next) {
-    //   // Check if thread exists.
-    //   const threadExists = findById(sourceData.threads, to.params.id)
-    //   if (threadExists) {
-    //     return next()
-    //   } else {
-    //     next({
-    //       name: 'NotFound',
-    //       params: {
-    //         pathMatch: to.path.substring(1).split('/')
-    //       },
-    //       query: to.query,
-    //       hash: to.hash
-    //     })
-    //   }
-    // }
   },
   {
     path: '/forum/:forumId/thread/create',
@@ -79,6 +64,11 @@ const routes = [
     props: {
       edit: true
     }
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
   },
   {
     path: '/:pathMatch(.*)*',
