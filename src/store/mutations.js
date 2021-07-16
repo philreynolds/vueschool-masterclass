@@ -6,6 +6,7 @@ export default {
   },
   setAuthId (state, id) {
     state.authId = id
+    console.log(`authId is now: ${id}`)
   },
   appendUnsubscribe (state, { unsubscribe }) {
     state.unsubscribes.push(unsubscribe)

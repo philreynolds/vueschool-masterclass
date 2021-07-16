@@ -7,6 +7,7 @@ import NotFound from '@/pages/NotFound'
 import Category from '@/pages/Category'
 import Profile from '@/pages/Profile'
 import Register from '@/pages/Register'
+import SignIn from '@/pages/SignIn'
 import sourceData from '@/data.json'
 import { createRouter, createWebHistory } from 'vue-router'
 import { findById } from '@/helpers'
@@ -69,6 +70,11 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: Register
+  },
+  {
+    path: '/signin',
+    name: 'SignIn',
+    component: SignIn
   },
   {
     path: '/:pathMatch(.*)*',
