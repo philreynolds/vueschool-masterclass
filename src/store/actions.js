@@ -127,6 +127,7 @@ export default {
     if (!userId) return
     dispatch('fetchItem', { emoji: '🙋', resource: 'users', id: userId })
     commit('setAuthId', userId)
+    return userId
   },
   // ---------------------------------------
   // Fetch All of a Resource

@@ -41,10 +41,10 @@ export default {
     }
   },
   methods: {
-    async signIn () {
+    // Was async signIn() and await this.$store.dispatch, but caused a timing bug. Removed async for now to evaluate.
+    signIn () {
       try {
-        await this.$store.dispatch('signInWithEmailAndPassword', { ...this.form })
-        console.log('AUTH USER', this.$store.authUser)
+        this.$store.dispatch('signInWithEmailAndPassword', { ...this.form })
         this.$router.push('/')
       } catch (error) {
         alert(error.message)
