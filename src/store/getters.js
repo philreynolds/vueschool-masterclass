@@ -7,6 +7,8 @@ export default {
   user: state => {
     return (id) => {
       const user = findById(state.users, id)
+      console.log('state.users', state.users)
+      console.log('user', user)
       if (!user) return null
       return {
         ...user,
@@ -21,6 +23,9 @@ export default {
         },
         get threadsCount () {
           return user.threads?.length || 0
+        },
+        get avatar () {
+          return user.avatar || null
         }
       }
     }

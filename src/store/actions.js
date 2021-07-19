@@ -19,9 +19,21 @@ export default {
     })
     await batch.commit()
     const newPost = await postRef.get()
-    commit('setItem', { resource: 'posts', item: { ...newPost.data(), id: newPost.id } })
-    commit('appendPostToThread', { childId: newPost.id, parentId: post.threadId }) // append post to thread
-    commit('appendContributorToThread', { childId: state.authId, parentId: post.threadId }) // append post to thread
+    commit('setItem', {
+      resource: 'posts',
+      item: {
+        ...newPost.data(),
+        id: newPost.id
+      }
+    })
+    commit('appendPostToThread', {
+      childId: newPost.id,
+      parentId: post.threadId
+    })
+    commit('appendContributorToThread', {
+      childId: state.authId,
+      parentId: post.threadId
+    })
   },
   async updatePost ({ commit, state }, { text, id }) {
     const post = {
@@ -37,7 +49,11 @@ export default {
     const updatedPost = await postRef.get()
     commit('setItem', { resource: 'posts', item: updatedPost })
   },
-  async createThread ({ commit, state, dispatch }, { text, title, forumId }) {
+  async createThread ({ commit, state, dispatch }, {
+    text,
+    title,
+    forumId
+  }) {
     const userId = state.authId
     const publishedAt = firebase.firestore.FieldValue.serverTimestamp()
     const threadRef = firebase.firestore().collection('threads').doc()
@@ -56,10 +72,25 @@ export default {
     await batch.commit()
     const newThread = await threadRef.get()
     //
-    commit('setItem', { resource: 'threads', item: { ...newThread.data(), id: newThread.id } })
-    commit('appendThreadToUser', { parentId: userId, childId: threadRef.id })
-    commit('appendThreadToForum', { parentId: forumId, childId: threadRef.id })
-    await dispatch('createPost', { text, threadId: threadRef.id })
+    commit('setItem', {
+      resource: 'threads',
+      item: {
+        ...newThread.data(),
+        id: newThread.id
+      }
+    })
+    commit('appendThreadToUser', {
+      parentId: userId,
+      childId: threadRef.id
+    })
+    commit('appendThreadToForum', {
+      parentId: forumId,
+      childId: threadRef.id
+    })
+    await dispatch('createPost', {
+      text,
+      threadId: threadRef.id
+    })
     return findById(state.threads, threadRef.id)
   },
   async updateThread ({ commit, state }, { id, text, title }) {
@@ -83,18 +114,59 @@ export default {
       ...newPost.data(),
       id: newPost.id
     }
-    commit('setItem', { resource: 'threads', item: newThread })
-    commit('setItem', { resource: 'posts', item: newPost })
+    commit('setItem', {
+      resource: 'threads',
+      item: newThread
+    })
+    commit('setItem', {
+      resource: 'posts',
+      item: newPost
+    })
     return docToResource(newThread)
   },
-  async registerUserWithEmailAndPassword ({ dispatch }, { avatar = null, email, name, username, password }) {
+  async registerUserWithEmailAndPassword ({ dispatch }, {
+    avatar = null,
+    email,
+    name,
+    username,
+    password
+  }) {
     const result = await firebase.auth().createUserWithEmailAndPassword(email, password)
-    await dispatch('createUser', { id: result.user.uid, email, name, username, avatar })
-    await dispatch('createUser', { id: result.user.uid, email, name, username, avatar })
+    await dispatch('createUser', {
+      id: result.user.uid,
+      email,
+      name,
+      username,
+      avatar
+    })
+    await dispatch('createUser', {
+      id: result.user.uid,
+      email,
+      name,
+      username,
+      avatar
+    })
   },
   async signInWithEmailAndPassword (context, { email, password }) {
-    console.log(email, password)
     return firebase.auth().signInWithEmailAndPassword(email, password)
+  },
+  async signInWithGoogle ({ dispatch }) {
+    const provider = new firebase.auth.GoogleAuthProvider()
+    const response = await firebase.auth().signInWithPopup(provider)
+    const user = response.user
+    const userRef = firebase.firestore().collection('users').doc(user.uid)
+    const userDoc = await userRef.get()
+    if (!userDoc.exists) {
+      return dispatch('createUser', {
+        id: user.id,
+        name: user.displayName,
+        email: user.email,
+        username: user.email,
+        avatar: user.photoURL
+      })
+    } else {
+      alert('alreadyExists!')
+    }
   },
   async signOut ({ commit }) {
     await firebase.auth().signOut()
@@ -108,24 +180,55 @@ export default {
     const userRef = await firebase.firestore().collection('users').doc(id)
     userRef.set(user)
     const newUser = await userRef.get()
-    commit('setItem', { resource: 'users', item: newUser })
+    commit('setItem', {
+      resource: 'users',
+      item: newUser
+    })
     return docToResource(newUser)
   },
   updateUser ({ commit }, user) {
-    commit('setItem', { resource: 'users', item: user })
+    commit('setItem', {
+      resource: 'users',
+      item: user
+    })
   },
   // ---------------------------------------
   // Fetch Single Resource
   // ---------------------------------------
-  fetchCategory: ({ dispatch }, { id }) => dispatch('fetchItem', { emoji: '🏷', resource: 'categories', id }),
-  fetchForum: ({ dispatch }, { id }) => dispatch('fetchItem', { emoji: '🏁', resource: 'forums', id }),
-  fetchThread: ({ dispatch }, { id }) => dispatch('fetchItem', { emoji: '📄', resource: 'threads', id }),
-  fetchPost: ({ dispatch }, { id }) => dispatch('fetchItem', { emoji: '💬', resource: 'posts', id }),
-  fetchUser: ({ dispatch }, { id }) => dispatch('fetchItem', { emoji: '🙋', resource: 'users', id }),
-  fetchAuthUser: ({ dispatch, state, commit }) => {
-    const userId = firebase.auth().currentUser?.uid
+  fetchCategory: ({ dispatch }, { id }) => dispatch('fetchItem', {
+    emoji: '🏷',
+    resource: 'categories',
+    id
+  }),
+  fetchForum: ({ dispatch }, { id }) => dispatch('fetchItem', {
+    emoji: '🏁',
+    resource: 'forums',
+    id
+  }),
+  fetchThread: ({ dispatch }, { id }) => dispatch('fetchItem', {
+    emoji: '📄',
+    resource: 'threads',
+    id
+  }),
+  fetchPost: ({ dispatch }, { id }) => dispatch('fetchItem', {
+    emoji: '💬',
+    resource: 'posts',
+    id
+  }),
+  fetchUser: ({ dispatch }, { id }) => dispatch('fetchItem', {
+    emoji: '🙋',
+    resource: 'users',
+    id
+  }),
+  async fetchAuthUser ({ dispatch, state, commit }) {
+    const userId = await firebase.auth().currentUser?.uid
+    console.log('userId', userId)
     if (!userId) return
-    dispatch('fetchItem', { emoji: '🙋', resource: 'users', id: userId })
+    dispatch('fetchItem', {
+      emoji: '🙋',
+      resource: 'users',
+      id: userId
+    })
     commit('setAuthId', userId)
     return userId
   },
@@ -137,8 +240,14 @@ export default {
     return new Promise((resolve) => {
       firebase.firestore().collection('categories').onSnapshot((querySnapshot) => {
         const categories = querySnapshot.docs.map(doc => {
-          const item = { id: doc.id, ...doc.data() }
-          commit('setItem', { resource: 'categories', item })
+          const item = {
+            id: doc.id,
+            ...doc.data()
+          }
+          commit('setItem', {
+            resource: 'categories',
+            item
+          })
           return item
         })
         resolve(categories)
@@ -148,25 +257,59 @@ export default {
   // ---------------------------------------
   // Fetch Multiple Resources
   // ---------------------------------------
-  fetchCategories: ({ dispatch }, { ids }) => dispatch('fetchItems', { resource: 'categories', ids, emoji: '🏷' }),
-  fetchForums: ({ dispatch }, { ids }) => dispatch('fetchItems', { resource: 'forums', ids, emoji: '🏁' }),
-  fetchThreads: ({ dispatch }, { ids }) => dispatch('fetchItems', { resource: 'threads', ids, emoji: '📄' }),
-  fetchPosts: ({ dispatch }, { ids }) => dispatch('fetchItems', { resource: 'posts', ids, emoji: '💬' }),
-  fetchUsers: ({ dispatch }, { ids }) => dispatch('fetchItems', { resource: 'users', ids, emoji: '🙋' }),
+  fetchCategories: ({ dispatch }, { ids }) => dispatch('fetchItems', {
+    resource: 'categories',
+    ids,
+    emoji: '🏷'
+  }),
+  fetchForums: ({ dispatch }, { ids }) => dispatch('fetchItems', {
+    resource: 'forums',
+    ids,
+    emoji: '🏁'
+  }),
+  fetchThreads: ({ dispatch }, { ids }) => dispatch('fetchItems', {
+    resource: 'threads',
+    ids,
+    emoji: '📄'
+  }),
+  fetchPosts: ({ dispatch }, { ids }) => dispatch('fetchItems', {
+    resource: 'posts',
+    ids,
+    emoji: '💬'
+  }),
+  fetchUsers: ({ dispatch }, { ids }) => dispatch('fetchItems', {
+    resource: 'users',
+    ids,
+    emoji: '🙋'
+  }),
   //
   fetchItem ({ state, commit }, { id, emoji, resource }) {
     console.log('🔥', emoji, id)
     return new Promise((resolve) => {
       const unsubscribe = firebase.firestore().collection(resource).doc(id).onSnapshot((doc) => {
-        const item = { ...doc.data(), id: doc.id }
-        commit('setItem', { resource, item })
+        const item = {
+          ...doc.data(),
+          id: doc.id
+        }
+        commit('setItem', {
+          resource,
+          item
+        })
         resolve(item)
       })
       commit('appendUnsubscribe', { unsubscribe })
     })
   },
-  fetchItems ({ dispatch }, { ids, resource, emoji }) {
-    return Promise.all(ids.map(id => dispatch('fetchItem', { id, resource, emoji })))
+  fetchItems ({ dispatch }, {
+    ids,
+    resource,
+    emoji
+  }) {
+    return Promise.all(ids.map(id => dispatch('fetchItem', {
+      id,
+      resource,
+      emoji
+    })))
   },
   async unsubscribeAllSnapshots ({ state, commit }) {
     state.unsubscribes.forEach(unsubscribe => unsubscribe())
