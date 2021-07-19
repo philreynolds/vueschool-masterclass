@@ -158,14 +158,12 @@ export default {
     const userDoc = await userRef.get()
     if (!userDoc.exists) {
       return dispatch('createUser', {
-        id: user.id,
+        id: user.uid,
         name: user.displayName,
         email: user.email,
         username: user.email,
         avatar: user.photoURL
       })
-    } else {
-      alert('alreadyExists!')
     }
   },
   async signOut ({ commit }) {

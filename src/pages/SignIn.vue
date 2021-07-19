@@ -50,8 +50,8 @@ export default {
         alert(error.message)
       }
     },
-    signInWithGoogle () {
-      this.$store.dispatch('signInWithGoogle')
+    async signInWithGoogle () {
+      await this.$store.dispatch('signInWithGoogle')
       this.$router.push('/')
     }
   },
