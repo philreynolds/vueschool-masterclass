@@ -227,7 +227,10 @@ export default {
     dispatch('fetchItem', {
       emoji: '🙋',
       resource: 'users',
-      id: userId
+      id: userId,
+      handleUnsubscribe: (unsubscribe) => {
+        commit('setAuthUserUnsubscribe', unsubscribe)
+      }
     })
     commit('setAuthId', userId)
     return userId
@@ -283,10 +286,11 @@ export default {
     emoji: '🙋'
   }),
   //
-  fetchItem ({ state, commit }, { id, emoji, resource }) {
+  fetchItem ({ state, commit }, { id, emoji, resource, handleUnsubscribe = null }) {
     console.log('🔥', emoji, id)
     return new Promise((resolve) => {
       const unsubscribe = firebase.firestore().collection(resource).doc(id).onSnapshot((doc) => {
+        console.log('on snapshot', resource, doc.data())
         const item = {
           ...doc.data(),
           id: doc.id
@@ -297,7 +301,11 @@ export default {
         })
         resolve(item)
       })
-      commit('appendUnsubscribe', { unsubscribe })
+      if (handleUnsubscribe) {
+        handleUnsubscribe(unsubscribe)
+      } else {
+        commit('appendUnsubscribe', { unsubscribe })
+      }
     })
   },
   fetchItems ({ dispatch }, {
@@ -314,5 +322,11 @@ export default {
   async unsubscribeAllSnapshots ({ state, commit }) {
     state.unsubscribes.forEach(unsubscribe => unsubscribe())
     commit('clearAllUnsubscribes')
+  },
+  async unsubscribeAuthUserSnapshot ({ state, commit }) {
+    if (state.authUserUnsubscribe) {
+      state.authUserUnsubscribe()
+      commit('setAuthUserUnsubscribe', null)
+    }
   }
 }

@@ -1,14 +1,12 @@
 <template>
-  <the-navbar></the-navbar>
-  <div class="container">
-    <router-view v-show="showPage" @ready="onPageReady"/>
-    <AppSpinner v-show="!showPage" class="push-top" />
+  <the-navbar/>
+  <div className="container">
+    <router-view v-show="showPage" @ready="onPageReady" :key="$route.path"/>
+    <AppSpinner v-show="!showPage"/>
   </div>
-
 </template>
 
 <script>
-
 import TheNavbar from '@/components/TheNavbar'
 import { mapActions } from 'vuex'
 import NProgress from 'nprogress'
@@ -45,7 +43,8 @@ export default {
 <style>
 @import "assets/style.css";
 @import "~nprogress/nprogress.css";
+
 #nprogress .bar {
-  background: #57AD8D;
+  background: #57AD8D !important;
 }
 </style>
