@@ -1,7 +1,13 @@
 <template>
   <div v-if="asyncDataStatus_ready" class="col-full push-top">
     <h1>Editing <i>{{ thread.title }}</i></h1>
-    <thread-editor :title="thread.title" :text="text" @save="save" @cancel="cancel"/>
+    <ThreadEditor
+        :title="thread.title"
+        :text="text"
+        @save="save"
+        @cancel="cancel"
+        @dirty="formIsDirty = true" @clean="formIsDirty = false"
+    />
   </div>
 </template>
 
@@ -19,6 +25,11 @@ export default {
     id: {
       type: String,
       required: true
+    }
+  },
+  data () {
+    return {
+      formIsDirty: false
     }
   },
   computed: {
@@ -54,6 +65,12 @@ export default {
     const thread = await this.fetchThread({ id: this.id })
     const post = await this.fetchPost({ id: thread.posts[0] })
     this.asyncDataStatus_fetched()
+  },
+  beforeRouteLeave () {
+    if (this.formIsDirty) {
+      const confirmed = window.confirm('Are you sure you want to leave? Unsaved changes will be lost!')
+      if (!confirmed) return false
+    }
   }
 }
 </script>
